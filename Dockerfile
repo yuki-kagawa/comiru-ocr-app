@@ -12,7 +12,8 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean
 
 # 高精度モデル(jpn.traineddata from tessdata_best)をダウンロードして上書き
-RUN curl -L -o /usr/share/tesseract-ocr/4.00/tessdata/jpn.traineddata \
+RUN mkdir -p /usr/share/tesseract-ocr/4.00/tessdata && \
+    curl -L -o /usr/share/tesseract-ocr/4.00/tessdata/jpn.traineddata \
     https://github.com/tesseract-ocr/tessdata_best/raw/main/jpn.traineddata
 
 # 作業ディレクトリ作成
