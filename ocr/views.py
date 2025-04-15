@@ -1,5 +1,8 @@
+import io
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.shortcuts import render, redirect
 from django.core.files.storage import FileSystemStorage
 from PIL import Image
@@ -176,27 +179,52 @@ def extract_table_data(text):
 def img_upload(request):
     if request.method == 'POST' and request.FILES.get('document'):
         document = request.FILES['document']
+
+        # Pillowで画像を一度開く（メモリ上で処理する）
+        img = Image.open(document)
+
+        # --- ① 画像をリサイズ（横幅800pxを上限に） ---
+        max_width = 800
+        if img.width > max_width:
+            ratio = max_width / float(img.width)
+            new_height = int(float(img.height) * ratio)
+            img = img.resize((max_width, new_height), Image.Resampling.LANCZOS)
+
+        # --- ② PNGならJPEGに変換（Render対策） ---
+        if img.mode in ("RGBA", "P"):
+            img = img.convert("RGB")
+
+        buffer = io.BytesIO()
+        img.save(buffer, format='JPEG')
+        buffer.seek(0)
+
+        # InMemoryUploadedFile に変換（保存のため）
+        resized_file = InMemoryUploadedFile(
+            buffer, None, 'resized.jpg', 'image/jpeg', buffer.getbuffer().nbytes, None
+        )
+
+        # --- ③ 保存処理 ---
         fs = FileSystemStorage()
-        filename = fs.save(document.name, document)
+        filename = fs.save(resized_file.name, resized_file)
         filepath = fs.url(filename)
 
+        # --- ④ OCR実行 ---
         img = Image.open(f".{filepath}")
         raw_text = pytesseract.image_to_string(img, lang='jpn')
         raw_text = normalize_text(raw_text)
 
+        # --- ⑤ 情報抽出処理 ---
         teacher_name = extract_teacher_name(raw_text)
         lesson_date = extract_date(raw_text)
         data = extract_table_data(raw_text)
 
-        # 選択中の子供を取得
+        # 選択中の子供の確認
         child_id = request.session.get('selected_child_id')
         if not child_id:
             messages.error(request, "お子様が選択されていません。")
             return redirect('accounts:mypage')
 
-        selected_child_id = request.session.get('selected_child_id')
-
-        # DB保存
+        # --- ⑥ DB保存処理 ---
         for row in data:
             try:
                 LessonEvaluation.objects.create(
@@ -206,7 +234,7 @@ def img_upload(request):
                     page=row[2],
                     rating=row[3],
                     teacher=teacher_name,
-                    child_id=selected_child_id
+                    child_id=child_id
                 )
             except Exception as e:
                 print("保存エラー:", e)
