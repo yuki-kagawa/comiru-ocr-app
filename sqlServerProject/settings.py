@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-)i7l81#e=406z^shwbp1$@$m9kfoz)b)y!8&tudveab740_uys
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['comiru-app.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
