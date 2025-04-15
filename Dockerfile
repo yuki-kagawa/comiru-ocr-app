@@ -20,9 +20,9 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 # アプリケーションのコピー
 COPY . .
 
-# 静的ファイル収集とマイグレーション
+# 静的ファイル収集
 RUN python manage.py collectstatic --noinput
-RUN python manage.py migrate
+# RUN python manage.py migrate
 
 # アプリケーション起動
 CMD ["gunicorn", "sqlServerProject.wsgi:application", "--bind", "0.0.0.0:8000"]
