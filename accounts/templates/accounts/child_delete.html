@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}お子様の削除{% endblock %}
+
+{% block content %}
+<h2>削除確認</h2>
+<p>「{{ child.name }}」を削除してもよろしいですか？</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">削除する</button>
+    <a href="{% url 'accounts:mypage' %}" class="btn btn-secondary">キャンセル</a>
+</form>
+{% endblock %}

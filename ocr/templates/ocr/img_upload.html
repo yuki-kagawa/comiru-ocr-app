@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}画像アップロード - Miyazawa's OCR{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4 text-center">画像アップロード</h2>
+
+    <div class="card shadow-sm p-4 mb-4">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="document" class="form-label">画像ファイルを選択してください</label>
+                <input type="file" name="document" id="document" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-success">アップロードして解析</button>
+        </form>
+    </div>
+
+    <a href="{% url 'ocr:dashboard' %}" class="btn btn-outline-primary">
+        ← ダッシュボードに戻る
+    </a>
+</div>
+{% endblock %}

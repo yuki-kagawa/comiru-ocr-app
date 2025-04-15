@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}お子様の追加{% endblock %}
+
+{% block content %}
+<h2>お子様の情報を追加</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">追加</button>
+    <a href="{% url 'accounts:mypage' %}" class="btn btn-secondary">キャンセル</a>
+</form>
+{% endblock %}

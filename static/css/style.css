@@ -1,0 +1,13 @@
+body {
+  background-color: #f8f9fa;
+}
+
+h1, h2 {
+  font-weight: bold;
+}
+
+canvas {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}{{ child.name }}の編集{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">{{ child.name }} の情報を編集</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">保存</button>
+        <a href="{% url 'accounts:mypage' %}" class="btn btn-secondary">キャンセル</a>
+    </form>
+</div>
+{% endblock %}

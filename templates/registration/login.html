@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}ログイン{% endblock %}
+
+{% block content %}
+<div class="card mx-auto w-100" style="max-width: 500px;">
+    <div class="card-body">
+        <h2 class="card-title text-center">ログイン</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+
+                <div class="mb-3">
+                    <label for="{{ form.username.id_for_label }}">メールアドレス:</label>
+                    {{ form.username }}
+                    {{ form.username.errors }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.password.label_tag }}
+                    {{ form.password }}
+                    {{ form.password.errors }}
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">ログイン</button>
+            </form>
+        <div class="mt-3 text-center">
+            <a href="{% url 'accounts:signup' %}">新規登録はこちら</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

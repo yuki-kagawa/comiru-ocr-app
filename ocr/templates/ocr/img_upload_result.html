@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}画像アップロード結果{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4 text-center">読み取り結果</h2>
+
+    <div class="mb-4">
+        <h5>抽出されたテキスト:</h5>
+        <pre class="bg-white p-3 border rounded">{{ text }}</pre>
+    </div>
+
+    <div class="mb-4 text-center">
+        <h5>アップロードされた画像:</h5>
+        <img src="{{ image_url }}" alt="Uploaded Image" class="img-fluid border">
+    </div>
+
+    <div class="mb-4">
+        <h5>授業情報</h5>
+        <ul class="list-group">
+            <li class="list-group-item"><strong>授業日:</strong> {{ date }}</li>
+            <li class="list-group-item"><strong>講師:</strong> {{ teacher_name }}</li>
+        </ul>
+    </div>
+
+    <div class="mb-4">
+        <h5>表データ</h5>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped align-middle text-center">
+                <thead class="table-light">
+                <tr>
+                    <th>教科</th>
+                    <th>内容</th>
+                    <th>ページ</th>
+                    <th>評価</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for row in table_data %}
+                    <tr>
+                        <td>{{ row.0 }}</td>
+                        <td>{{ row.1 }}</td>
+                        <td>{{ row.2 }}</td>
+                        <td>{{ row.3 }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between">
+        <a href="{% url 'ocr:img_upload' %}" class="btn btn-primary">← 画像アップロードに戻る</a>
+        <a href="{% url 'ocr:dashboard' %}" class="btn btn-outline-secondary">ダッシュボードへ戻る</a>
+    </div>
+</div>
+{% endblock %}

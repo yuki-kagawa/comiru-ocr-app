@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}マイページ{% endblock %}
+
+{% block content %}
+<h2>マイページ</h2>
+<div class="card mb-4 shadow-sm rounded-3">
+  <div class="card-body">
+    <h5 class="card-title">ユーザー情報</h5>
+    <p class="card-text mb-1"><strong>ユーザー名：</strong>{{ request.user.username }}</p>
+    <p class="card-text mb-1"><strong>メールアドレス：</strong>{{ request.user.email|default:"未登録" }}</p>
+
+    <a href="{% url 'accounts:password_change' %}" class="btn btn-outline-secondary btn-sm mt-2">パスワードを変更する</a>
+  </div>
+</div>
+
+<p>登録されているお子様一覧：</p>
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+  {% for child in children %}
+    <div class="col">
+      <div class="card shadow-sm rounded-3 {% if child.id == selected_child_id %}border-primary{% endif %}"
+           onclick="location.href='{% url 'accounts:set_select_child' child.id %}'"
+           style="cursor: pointer;">
+        <div class="card-body position-relative">
+
+          <!-- 編集・削除アイコンボタン -->
+          <div class="position-absolute top-0 end-0 m-2">
+            <a href="{% url 'accounts:child_edit' child.id %}" class="btn btn-sm btn-outline-secondary me-1" onclick="event.stopPropagation();">
+              ✎
+            </a>
+            <a href="{% url 'accounts:child_delete' child.id %}" class="btn btn-sm btn-outline-danger" onclick="event.stopPropagation();">
+              🗑
+            </a>
+          </div>
+
+          <!-- 子供情報 -->
+          <h5 class="card-title">
+            {{ child.name }}
+            {% if child.id == selected_child_id %}
+              <span class="badge bg-primary ms-2">選択中</span>
+            {% endif %}
+          </h5>
+          <p class="card-text mb-1"><strong>誕生日：</strong>{{ child.birthday }}</p>
+          <p class="card-text mb-1"><strong>性別：</strong>{{ child.get_gender_display|default:"未登録" }}</p>
+          <p class="card-text mb-1"><strong>ご利用中の塾：</strong>{{ child.juku|default:"未登録" }}</p>
+
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <p>登録されているお子さまがいません。</p>
+  {% endfor %}
+</div>
+
+<div class="text-center mt-4">
+    <a href="{% url 'accounts:child_add' %}" class="btn btn-success">お子様を追加</a>
+</div>
+
+{% endblock %}
