@@ -72,7 +72,6 @@ def child_add(request):
         form = ChildForm(request.POST)
         if form.is_valid():
             child = form.save(commit=False)
-            print("DEBUG: request.user =", request.user)  # ← これ！
             child.parent = request.user
             child.save()
             return redirect('accounts:mypage')
