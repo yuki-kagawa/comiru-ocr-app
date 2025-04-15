@@ -4,15 +4,15 @@ FROM python:3.11-slim
 RUN apt-get update && apt-get install -y \
     tesseract-ocr \
     tesseract-ocr-jpn \
+    curl \
     libglib2.0-0 \
     libsm6 \
     libxrender1 \
     libxext6 \
     && apt-get clean
 
-# 高精度モデル(jpn.traineddata from tessdata_best)をダウンロード
-RUN mkdir -p /usr/share/tesseract-ocr/4.00/tessdata && \
-    curl -L -o /usr/share/tesseract-ocr/4.00/tessdata/jpn.traineddata \
+# 高精度モデル(jpn.traineddata from tessdata_best)をダウンロードして上書き
+RUN curl -L -o /usr/share/tesseract-ocr/4.00/tessdata/jpn.traineddata \
     https://github.com/tesseract-ocr/tessdata_best/raw/main/jpn.traineddata
 
 # 作業ディレクトリ作成
