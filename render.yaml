@@ -2,7 +2,9 @@ services:
   - type: web
     name: comiru-ocr-app
     env: python
-    buildCommand: pip install -r requirements.txt
+    buildCommand: |
+      pip install -r requirements.txt
+      python manage.py collectstatic --noinput
     startCommand: gunicorn sqlServerProject.wsgi
     autoDeploy: true
     envVars:
@@ -11,3 +13,4 @@ services:
           name: comiru_ocr_db
           property: connectionString
     migrationsCommand: python manage.py migrate
+
