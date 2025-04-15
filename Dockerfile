@@ -25,4 +25,4 @@ RUN python manage.py collectstatic --noinput
 # RUN python manage.py migrate
 
 # アプリケーション起動
-CMD ["gunicorn", "sqlServerProject.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "sqlServerProject.wsgi:application", "--bind", "0.0.0.0:10000"]

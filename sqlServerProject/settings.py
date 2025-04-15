@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import dj_database_url
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-)i7l81#e=406z^shwbp1$@$m9kfoz)b)y!8&tudveab740_uys'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = ['comiru-ocr-app-doc.onrender.com', 'localhost', '127.0.0.1']
 
@@ -98,8 +100,6 @@ DATABASES = {
 """
 
 """ PostgreSQL接続 """
-import dj_database_url
-import os
 DATABASES = {
     'default': dj_database_url.config(
         default=os.environ.get('DATABASE_URL')
