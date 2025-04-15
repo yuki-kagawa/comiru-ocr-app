@@ -72,7 +72,7 @@ def child_add(request):
         form = ChildForm(request.POST)
         if form.is_valid():
             child = form.save(commit=False)
-            child.user = request.user
+            child.parent = request.user
             child.save()
             return redirect('accounts:mypage')
     else:
