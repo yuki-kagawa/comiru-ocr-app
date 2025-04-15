@@ -1,1 +1,1 @@
-web: gunicorn sqlServerProject.wsgi
+web: gunicorn sqlServerProject.wsgi  --timeout 120
