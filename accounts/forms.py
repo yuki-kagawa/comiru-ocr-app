@@ -32,5 +32,6 @@ class ChildForm(forms.ModelForm):
         labels = {
             'name': '名前',
             'birthday': '誕生日',
+            'gender': '性別',
             'juku': '塾'
         }

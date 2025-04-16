@@ -9,6 +9,3 @@ urlpatterns = [
     path('img_upload/', views.img_upload, name='img_upload'),
     path('', views.dashboard, name='dashboard')
 ]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

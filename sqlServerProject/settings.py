@@ -25,7 +25,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-)i7l81#e=406z^shwbp1$@$m9kfoz)b)y!8&tudveab740_uys'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# 本番実行用
 DEBUG = os.environ.get("DEBUG", "False") == "True"
+# local実行用
+# DEBUG = True
 
 ALLOWED_HOSTS = ['comiru-ocr-app-doc.onrender.com', 'localhost', '127.0.0.1']
 
@@ -85,24 +88,24 @@ DATABASES = {
 }
 """
 
-"""SQLServer接続
-DATABASES = {
-    'default': {
-        'ENGINE': 'mssql',
-        'NAME': 'myDjangoProjectDB',
-        'HOST': '(localdb)\\MSSQLLocalDB',
-        'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',
-            'trusted_connection': 'yes',
-        },
+if os.environ.get('DATABASE_URL'):
+    # 本番環境（PostgreSQL）
+    DATABASES = {
+        'default': dj_database_url.config(conn_max_age=600)
     }
-}
-"""
-
-""" PostgreSQL接続 """
-DATABASES = {
-    'default': dj_database_url.config(conn_max_age=600)
-}
+else:
+    # ローカル環境（SQL Server）
+    DATABASES = {
+        'default': {
+            'ENGINE': 'mssql',
+            'NAME': 'myDjangoProjectDB',
+            'HOST': '(localdb)\\MSSQLLocalDB',
+            'OPTIONS': {
+                'driver': 'ODBC Driver 17 for SQL Server',
+                'trusted_connection': 'yes',
+            },
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -149,8 +152,10 @@ STATICFILES_DIRS = [Path(BASE_DIR / 'static')]
 AUTH_USER_MODEL = 'accounts.User'
 
 # アップロードしたファイルの格納先を指定
+""" 画像は使用ストレージ削減のため保存をやめる
 MEDIA_URL = '/media/'
 MEDIA_ROOT = Path(BASE_DIR / 'media')
+"""
 
 LOGIN_URL = 'accounts:login'
 LOGIN_REDIRECT_URL = 'accounts:mypage'
