@@ -87,7 +87,11 @@ DATABASES = {
     }
 }
 """
+DATABASES = {
+    'default': dj_database_url.config(conn_max_age=600)
+}
 
+""" ローカル実行用
 if os.environ.get('DATABASE_URL'):
     # 本番環境（PostgreSQL）
     DATABASES = {
@@ -106,6 +110,7 @@ else:
             },
         }
     }
+"""
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
